@@ -28,7 +28,7 @@ export default class NewBill {
 
     if(!isPicture(file)) {
       //show message error
-      alert('the uploaded file is not picture type');
+      console.log('the uploaded file is not picture type')
 
       //empty the input type="file"
       document.querySelector('[data-testid="file"]').value = '';
