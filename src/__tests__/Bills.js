@@ -46,6 +46,7 @@ describe("Given I am connected as an employee", () => {
     test("then must go to the create new bill page", async () => {
 
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee'
       }))
@@ -67,32 +68,34 @@ describe("Given I am connected as an employee", () => {
 
   describe('when click on new bill', () => {
     test('click should handle handleClickNewBill', async () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-        window.localStorage.setItem('user', JSON.stringify({
-          type: 'Employee'
-      }))
 
-      document.body.innerHTML = BillsUI({ data: bills})
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }));
+
+      document.body.innerHTML = BillsUI({ data: bills});
 
       const onNavigate = (pathname) => {
-        document.body.innerHTML = ROUTES({ pathname })
+        document.body.innerHTML = ROUTES({ pathname });
       }
 
       const billsPage = new Bills({
           document, onNavigate, store: null, bills, localStorage: window.localStorage
-      })
+      });
 
-      await waitFor(() => screen.getByTestId('btn-new-bill'))
+      await waitFor(() => screen.getByTestId('btn-new-bill'));
 
-      const createNewBillButton = screen.getByTestId('btn-new-bill')
+      const createNewBillButton = screen.getByTestId('btn-new-bill');
 
-      const handleClickNewBillHandler = jest.fn((e) => billsPage.handleClickNewBill())
+      const handleClickNewBillHandler = jest.fn((e) => billsPage.handleClickNewBill());
 
-      createNewBillButton.addEventListener('click', handleClickNewBillHandler)
+      createNewBillButton.addEventListener('click', handleClickNewBillHandler);
 
-      userEvent.click(createNewBillButton)
+      userEvent.click(createNewBillButton);
       
-      expect(handleClickNewBillHandler).toHaveBeenCalled()
+      expect(handleClickNewBillHandler).toHaveBeenCalled();
     })
   })
 
@@ -203,7 +206,7 @@ describe("Given I am a user connected as employee", () => {
             return Promise.reject(new Error("Erreur 404"))
           }
         }})
-      window.onNavigate(ROUTES_PATH.Dashboard)
+      window.onNavigate(ROUTES_PATH.Bills)
       await new Promise(process.nextTick);
       const message = await screen.getByText(/Erreur 404/)
       expect(message).toBeTruthy()
@@ -218,7 +221,7 @@ describe("Given I am a user connected as employee", () => {
           }
         }})
 
-      window.onNavigate(ROUTES_PATH.Dashboard)
+      window.onNavigate(ROUTES_PATH.Bills)
       await new Promise(process.nextTick);
       const message = await screen.getByText(/Erreur 500/)
       expect(message).toBeTruthy()
